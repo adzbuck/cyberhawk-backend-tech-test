@@ -31,13 +31,13 @@ Route::get('/turbines/{turbineId}', [TurbineController::class, 'show'])
 
 //
 //
-//`/turbines/components` -> `ComponentController::index`
+//`/turbines/{turbineId}/components` -> `ComponentController::index`
 //
-//`/turbines/components/{componentId}` -> `ComponentController::show`
+//`/turbines/{turbineId}/components/{componentId}` -> `ComponentController::show`
 //
-//`/turbines/inspections` -> `InspectionController::index`
+//`/turbines/{turbineId}/inspections` -> `InspectionController::index`
 //
-//`/turbines/inspections/{inspectionId}` -> `InspectionController::show`
+//`/turbines/{turbineId}/inspections/{inspectionId}` -> `InspectionController::show`
 //
 //`/components` -> `ComponentController::index`
 //

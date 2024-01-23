@@ -125,9 +125,9 @@ We can however map the endpoint to the controllers/actions, although looking at 
 
 `/turbines/{turbineId}` -> `TurbineController::show`
 
-`/turbines/components` -> `ComponentController::index`
+`/turbines/{turbineId}/components` -> `ComponentController::index`
 
-`/turbines/components/{componentId}` -> `ComponentController::show`
+`/turbines/{turbineId}/components/{componentId}` -> `ComponentController::show`
 
 `/turbines/inspections` -> `InspectionController::index`
 
