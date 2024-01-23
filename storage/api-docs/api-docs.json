@@ -1,0 +1,109 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Wind farm API Documentation",
+        "description": "Wind farm API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/farms": {
+            "get": {
+                "summary": "List all farm details",
+                "operationId": "cd8552f0d16d177a9f8645173cb0502f",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FarmCollection"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/api/farms/{farmId}": {
+            "get": {
+                "summary": "Show farm details",
+                "operationId": "169767502ad0c493476ce5fa5ef2e72d",
+                "parameters": [
+                    {
+                        "name": "farmId",
+                        "in": "path",
+                        "description": "The ID of the farm",
+                        "required": true,
+                        "example": 5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FarmResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "FarmCollection": {
+                "description": "List farms",
+                "properties": {
+                    "data": {
+                        "description": "Array of all farm data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FarmResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "FarmResource": {
+                "description": "Show farm details",
+                "properties": {
+                    "id": {
+                        "description": "ID of the farm",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "name": {
+                        "description": "Name of the farm",
+                        "type": "integer",
+                        "example": "Sample Farm"
+                    },
+                    "createdAt": {
+                        "description": "The datetime the farm was created",
+                        "type": "date-time",
+                        "example": "2024-01-23T12:00:20.000000Z"
+                    },
+                    "updatedAt": {
+                        "description": "The datetime the farm was created",
+                        "type": "date-time",
+                        "example": "2024-01-23T12:00:20.000000Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "InternalServerError": {
+                "description": "Internal Server Error"
+            }
+        }
+    }
+}

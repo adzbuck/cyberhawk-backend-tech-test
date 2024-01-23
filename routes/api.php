@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\FarmController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,3 +13,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/farms', [FarmController::class, 'index']);
+Route::get('/farms/{farmID}', [FarmController::class, 'show']);
