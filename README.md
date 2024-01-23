@@ -74,4 +74,89 @@ composer install --ignore-platform-reqs
   - Sail creates a docker volume which is persistent, so stopping/starting sail will not affect/fix issues in a volume (missing DB etc)
 
 ## Your Notes
-This is a place for you to add your notes, plans, thinking and any feedback you have for us of the task, please feel free to include whatever you like here, we'll make sure to read it. 
+I'm going to add authentication at the end if i have enough time, as I'd rather do more of the endpoints/tests. I plan on using Laravel Sanctum.
+
+### Planning the models
+Lets break down the task a little bit to find some domains for our project.
+
+We'd like you to build an application that will display an example <b>wind farm</b>, its <b>turbines</b> and their <b>components</b>. We'd like to be able to see components and their <b>grades</b> (measurement of damage/wear) ranging between 1 - 5.
+
+So after reading the task we have the following models:
+
+- Wind Farms
+- Turbines
+- Components
+- Grades
+
+There can multiple examinations to grade the components, so we need to add another model for this. As I've already read the API spec, we're going to call it inspections.
+
+So after reading the task we have our required models:
+
+- Farms <sup>* Changed due to API spec, I'd have called it Wind Farms</sup>
+- Turbines
+- Components
+- Inspections
+- Grades
+
+#### Relationship mapping
+
+I've created a EER map to show my planned relationships. 
+- I've added component type and grade type as it's in the API sepc.
+    - This makes sense to allow for ease of update for component name, and doesn't tie grade to only numeric measurement for the future.
+
+![img.png](relationship-map.png)
+
+I've mapped this in a way so each component has it's own inspection, that way the user doesn't have to inspect all components on the same day.
+
+### Planning the endpoints
+
+As we've already got the API spec, this is mostly done for us.
+We can however map the endpoint to the controllers/actions, although looking at the endpoints it looks pretty obvious.
+
+`/farms` -> `FarmController::index`
+
+`/farms/{farmId}` -> `FarmController::show`
+
+`/farms/{farmId}/turbines` -> `TurbineController::index`
+
+`/farms/{farmId}/turbines/{turbineId}` -> `TurbineController::show`
+
+`/turbines` -> `TurbineController::index`
+
+`/turbines/{turbineId}` -> `TurbineController::show`
+
+`/turbines/components` -> `ComponentController::index`
+
+`/turbines/components/{componentId}` -> `ComponentController::show`
+
+`/turbines/inspections` -> `InspectionController::index`
+
+`/turbines/inspections/{inspectionId}` -> `InspectionController::show`
+
+`/components` -> `ComponentController::index`
+
+`/components/{componentId}` -> `ComponentController::show`
+
+`/components/{componentId}/grades` -> `GradeController::index`
+
+`/components/{componentId}/grades/{gradeId}` -> `GradeController::show`
+
+`/inspections` -> `InspectionController::index`
+
+`/inspections/{inspectionId}` -> `InspectionController::show`
+
+`/inspections/{inspectionId}/grades` -> `GradeController::index`
+
+`/inspections/{inspectionId}/grades/{gradeId}` -> `GradeController::show`
+
+`/grades` -> `GradeController::index`
+
+`/grades/{gradeId}` -> `GradeController::show`
+
+`/component-type` -> `ComponentTypeController::index`
+
+`/component-type/{componentTypeId}` -> `ComponentTypeController::show`
+
+`/grade-type` -> `GradeTypeController::index`
+
+`/grade-type/{gradeTypeId}` -> `GradeTypeController::show`
