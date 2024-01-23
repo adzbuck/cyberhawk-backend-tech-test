@@ -56,6 +56,124 @@
                     }
                 }
             }
+        },
+        "/api/turbines": {
+            "get": {
+                "summary": "List all turbines",
+                "operationId": "92af88e390872c664a6dc58dfb6ea74d",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TurbineCollection"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/api/farms/{farmId}/turbines": {
+            "get": {
+                "summary": "List all turbines for a specific farm",
+                "operationId": "255743b18bc48ca137f084175796146b",
+                "parameters": [
+                    {
+                        "name": "farmId",
+                        "in": "path",
+                        "description": "The ID of the farm to filter by",
+                        "required": true,
+                        "example": 5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TurbineCollection"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/api/turbines/{turbineId}": {
+            "get": {
+                "summary": "Show turbine details",
+                "operationId": "9ef9e30ce72a62a38537f141054d9851",
+                "parameters": [
+                    {
+                        "name": "turbineId",
+                        "in": "path",
+                        "description": "The ID of the turbine",
+                        "required": true,
+                        "example": 5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TurbineResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/api/farms/{farmId}/turbines/{turbineId}": {
+            "get": {
+                "summary": "Show turbine details related to a specific farm",
+                "operationId": "4b30229f78101355701a6f61ac7286c0",
+                "parameters": [
+                    {
+                        "name": "farmId",
+                        "in": "path",
+                        "description": "The ID of the farm to filter by",
+                        "required": true,
+                        "example": 5
+                    },
+                    {
+                        "name": "turbineId",
+                        "in": "path",
+                        "description": "The ID of the turbine",
+                        "required": true,
+                        "example": 5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TurbineResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -86,14 +204,62 @@
                         "type": "integer",
                         "example": "Sample Farm"
                     },
-                    "createdAt": {
+                    "created_at": {
                         "description": "The datetime the farm was created",
-                        "type": "date-time",
+                        "type": "string",
+                        "format": "date-time",
                         "example": "2024-01-23T12:00:20.000000Z"
                     },
-                    "updatedAt": {
+                    "updated_at": {
                         "description": "The datetime the farm was created",
-                        "type": "date-time",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-23T12:00:20.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "TurbineCollection": {
+                "description": "List turbines",
+                "properties": {
+                    "data": {
+                        "description": "Array of all turbine data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TurbineResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "TurbineResource": {
+                "description": "Show turbine details",
+                "properties": {
+                    "id": {
+                        "description": "ID of the turbine",
+                        "type": "integer",
+                        "example": 4
+                    },
+                    "farm_id": {
+                        "description": "ID of the parent farm",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "name": {
+                        "description": "Name of the turbine",
+                        "type": "integer",
+                        "example": "Sample Turbine"
+                    },
+                    "created_at": {
+                        "description": "The datetime the turbine was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-23T12:00:20.000000Z"
+                    },
+                    "updated_at": {
+                        "description": "The datetime the turbine was created",
+                        "type": "string",
+                        "format": "date-time",
                         "example": "2024-01-23T12:00:20.000000Z"
                     }
                 },

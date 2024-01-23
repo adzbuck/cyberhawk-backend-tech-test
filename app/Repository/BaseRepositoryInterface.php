@@ -16,7 +16,6 @@ interface BaseRepositoryInterface
     public function fetchAll(): Collection;
 
     /**
-     * @param int $id
      * @return T|null
      */
     public function fetchById(int $id): ?Model;

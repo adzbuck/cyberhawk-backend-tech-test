@@ -72,7 +72,7 @@ class FarmController extends Controller
         $farm = $this->farmService->fetchById((int) $farmID);
 
         if (!$farm) {
-            abort(404);
+            abort(Response::HTTP_NOT_FOUND);
         }
 
         return new FarmResource($farm);

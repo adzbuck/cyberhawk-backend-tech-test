@@ -7,6 +7,7 @@ use App\Repository\FarmRepositoryInterface;
 
 /**
  * @extends BaseRepository<Farm>
+ * @property Farm $model
  */
 class FarmRepository extends BaseRepository implements FarmRepositoryInterface
 {

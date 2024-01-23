@@ -64,7 +64,28 @@ class FarmControllerTest extends TestCase
     {
         $response = $this->get('/api/farms/5');
 
-        $response->assertStatus(404);
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_the_farm_controller_show_returns_404_response_when_a_float()
+    {
+        Farm::factory()
+            ->createOne(['id' => 5]);
+
+        $response = $this->get('/api/farms/5.5');
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_the_farm_controller_show_returns_404_response_when_not_a_number()
+    {
+        Farm::factory()
+            ->count(5)
+            ->create();
+
+        $response = $this->get('/api/farms/test');
+
+        $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_farm_controller_show_returns_single_response()

@@ -9,35 +9,42 @@ use OpenApi\Attributes as OA;
 
 /**
  * @property int $id
+ * @property int $farm_id
  * @property string $name
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
 #[OA\Schema(
-    description: "Show farm details",
+    description: "Show turbine details",
     properties: [
         new OA\Property(
             property: 'id',
-            description: 'ID of the farm',
+            description: 'ID of the turbine',
             type: 'integer',
             example: 4,
         ),
         new OA\Property(
-            property: 'name',
-            description: 'Name of the farm',
+            property: 'farm_id',
+            description: 'ID of the parent farm',
             type: 'integer',
-            example: 'Sample Farm',
+            example: 3,
+        ),
+        new OA\Property(
+            property: 'name',
+            description: 'Name of the turbine',
+            type: 'integer',
+            example: 'Sample Turbine',
         ),
         new OA\Property(
             property: 'created_at',
-            description: 'The datetime the farm was created',
+            description: 'The datetime the turbine was created',
             type: 'string',
             format: 'date-time',
             example: '2024-01-23T12:00:20.000000Z',
         ),
         new OA\Property(
             property: 'updated_at',
-            description: 'The datetime the farm was created',
+            description: 'The datetime the turbine was created',
             type: 'string',
             format: 'date-time',
             example: '2024-01-23T12:00:20.000000Z',
@@ -45,7 +52,7 @@ use OpenApi\Attributes as OA;
     ],
     type: 'object'
 )]
-class FarmResource extends JsonResource
+class TurbineResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -57,6 +64,7 @@ class FarmResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'farm_id' => $this->farm_id,
             'name' => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
