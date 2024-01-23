@@ -20,7 +20,8 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Model
 {
-    use HasFactory, HasApiTokens;
+    use HasFactory;
+    use HasApiTokens;
 
     protected $fillable = ['name', 'email'];
 }

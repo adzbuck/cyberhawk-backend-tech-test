@@ -160,3 +160,27 @@ We can however map the endpoint to the controllers/actions, although looking at 
 `/grade-type` -> `GradeTypeController::index`
 
 `/grade-type/{gradeTypeId}` -> `GradeTypeController::show`
+
+
+## Summary
+I've cut the project short due to time, and I feel most of the other endpoints won't show anything extra.
+
+To seed run:
+`./vendor/bin/sail artisan migrate:fresh --seed`
+
+Once seeded, get a token:
+`./vendor/bin/sail artisan tinker --execute "dd(\App\Models\User::find(1)->createToken('api', ['*'], now()->addWeek())->plainTextToken);"`
+
+Make sure your requests have the following headers:
+- Accept: application/json
+- Referer: http://localhost
+- Authorization: Bearer <token>
+
+To run swagger api generation:
+`./vendor/bin/sail artisan l5-swagger:generate`
+
+To preview the docs, visit:
+http://localhost:80/api/documentation
+
+To run psalm:
+`./vendor/bin/sail bin psalm`
