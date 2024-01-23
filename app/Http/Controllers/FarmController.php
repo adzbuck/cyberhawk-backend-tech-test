@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\FarmCollection;
 use App\Http\Resources\FarmResource;
+use App\Models\Farm;
 use App\Services\FarmService;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,6 +20,9 @@ class FarmController extends Controller
         $this->farmService = $farmService;
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     #[OA\Get(
         path: "/api/farms",
         summary: "List all farm details",
@@ -34,8 +40,10 @@ class FarmController extends Controller
             )
         ]
     )]
-    public function index(): FarmCollection
+    public function index(Request $request): FarmCollection
     {
+        $this->authorize('list', Farm::class);
+
         $farms = $this->farmService->fetchAll();
 
         return new FarmCollection($farms);
@@ -69,6 +77,8 @@ class FarmController extends Controller
     )]
     public function show(string $farmID): FarmResource
     {
+        $this->authorize('view', Farm::class);
+
         $farm = $this->farmService->fetchById((int) $farmID);
 
         if (!$farm) {

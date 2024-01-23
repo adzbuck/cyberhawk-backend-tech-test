@@ -15,18 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/farms', [FarmController::class, 'index']);
-Route::get('/farms/{farmId}', [FarmController::class, 'show'])
-    ->whereNumber('farmId');
+Route::middleware(['auth:sanctum'])->group(function () {
 
-Route::get('/farms/{farmId}/turbines', [TurbineController::class, 'index'])
-    ->whereNumber('farmId');
-Route::get('/farms/{farmId}/turbines/{turbineId}', [TurbineController::class, 'show'])
-    ->whereNumber(['farmId', 'turbineId']);
+    Route::get('/farms', [FarmController::class, 'index']);
+    Route::get('/farms/{farmId}', [FarmController::class, 'show'])
+        ->whereNumber('farmId');
 
-Route::get('/turbines', [TurbineController::class, 'index']);
-Route::get('/turbines/{turbineId}', [TurbineController::class, 'show'])
-    ->whereNumber('turbineId');
+    Route::get('/farms/{farmId}/turbines', [TurbineController::class, 'index'])
+        ->whereNumber('farmId');
+    Route::get('/farms/{farmId}/turbines/{turbineId}', [TurbineController::class, 'show'])
+        ->whereNumber(['farmId', 'turbineId']);
+
+    Route::get('/turbines', [TurbineController::class, 'index']);
+    Route::get('/turbines/{turbineId}', [TurbineController::class, 'show'])
+        ->whereNumber('turbineId');
+});
 
 
 //

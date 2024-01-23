@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TurbineCollection;
 use App\Http\Resources\TurbineResource;
+use App\Models\Turbine;
 use App\Services\FarmService;
 use App\Services\TurbineService;
 use Illuminate\Http\Request;
@@ -68,6 +69,8 @@ class TurbineController extends Controller
     )]
     public function index(Request $request): TurbineCollection
     {
+        $this->authorize('list', Turbine::class);
+
         $farmId = (int) $request->route('farmId');
 
         if ($farmId && !$this->farmService->fetchById($farmId)) {
@@ -143,6 +146,8 @@ class TurbineController extends Controller
     )]
     public function show(Request $request): TurbineResource
     {
+        $this->authorize('view', Turbine::class);
+
         $farmId = (int) $request->route('farmId');
         $turbineId = (int) $request->route('turbineId');
 

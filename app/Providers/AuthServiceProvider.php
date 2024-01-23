@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Farm;
+use App\Models\Turbine;
+use App\Policies\FarmPolicy;
+use App\Policies\TurbinePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -12,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+         Farm::class => FarmPolicy::class,
+         Turbine::class => TurbinePolicy::class,
     ];
 
     /**
