@@ -4,7 +4,9 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Farm;
 use App\Models\Turbine;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
@@ -14,14 +16,31 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_index_returns_a_successful_response()
     {
-        $response = $this->get('/api/turbines');
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
+        $response = $this->getJson('/api/turbines');
 
         $response->assertStatus(Response::HTTP_OK);
     }
 
+    public function test_the_turbine_controller_index_unauthenticated_response()
+    {
+        $response = $this->getJson('/api/turbines');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
     public function test_the_turbine_controller_index_returns_empty_response()
     {
-        $response = $this->get('/api/turbines');
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
+        $response = $this->getJson('/api/turbines');
 
         $response->assertJsonStructure(['data']);
         $response->assertJsonCount(0, 'data');
@@ -29,11 +48,16 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_index_returns_single_response()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Turbine::factory()
             ->count(1)
             ->create();
 
-        $response = $this->get('/api/turbines');
+        $response = $this->getJson('/api/turbines');
         $response->assertJsonStructure(['data']);
         $response->assertJsonCount(1, 'data');
 
@@ -45,11 +69,16 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_index_returns_multiple_response()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Turbine::factory()
             ->count(5)
             ->create();
 
-        $response = $this->get('/api/turbines');
+        $response = $this->getJson('/api/turbines');
         $response->assertJsonStructure(['data']);
         $response->assertJsonCount(5, 'data');
 
@@ -62,51 +91,76 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_index_returns_404_response_when_farm_id_a_float()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->createOne(['id' => 5]);
 
-        $response = $this->get('/api/farms/4.5/turbines');
+        $response = $this->getJson('/api/farms/4.5/turbines');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_turbine_controller_index_returns_404_response_when_farm_id_not_a_number()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->count(5)
             ->create();
 
-        $response = $this->get('/api/farms/test/turbines');
+        $response = $this->getJson('/api/farms/test/turbines');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_turbine_controller_index_returns_a_404_response_when_filtered_by_farm()
     {
-        $response = $this->get('/api/farms/1/turbines');
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
+        $response = $this->getJson('/api/farms/1/turbines');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_turbine_controller_index_returns_a_successful_response_when_filtered_by_farm()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->createOne(['id' => 1]);
 
-        $response = $this->get('/api/farms/1/turbines');
+        $response = $this->getJson('/api/farms/1/turbines');
 
         $response->assertStatus(Response::HTTP_OK);
     }
 
     public function test_the_turbine_controller_index_returns_single_results_response_when_filtered_by_farm()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->createOne();
 
         Turbine::factory()
             ->createOne(['farm_id' => 1]);
 
-        $response = $this->get('/api/farms/1/turbines');
+        $response = $this->getJson('/api/farms/1/turbines');
 
         $response->assertJsonStructure(['data']);
         $response->assertJsonCount(1, 'data');
@@ -119,12 +173,17 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_index_returns_multiple_results_response_when_filtered_by_farm()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->count(5)
             ->has(Turbine::factory()->count(5))
             ->create();
 
-        $response = $this->get('/api/farms/1/turbines');
+        $response = $this->getJson('/api/farms/1/turbines');
 
         $response->assertJsonStructure(['data']);
         $response->assertJsonCount(5, 'data');
@@ -138,38 +197,65 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_show_returns_404_response()
     {
-        $response = $this->get('/api/turbines/5');
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
+        $response = $this->getJson('/api/turbines/5');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_turbine_controller_show_returns_404_response_when_turbine_id_a_float()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Turbine::factory()
             ->createOne(['id' => 5]);
 
-        $response = $this->get('/api/turbines/5.4');
+        $response = $this->getJson('/api/turbines/5.4');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_turbine_controller_show_returns_404_response_when_turbine_id_not_a_number()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Turbine::factory()
             ->count(5)
             ->create();
 
-        $response = $this->get('/api/turbines/test');
+        $response = $this->getJson('/api/turbines/test');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
+    public function test_the_turbine_controller_show_unauthenticated_response()
+    {
+        $response = $this->getJson('/api/turbines/1');
+
+        $response->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
     public function test_the_turbine_controller_show_returns_single_response()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Turbine::factory()
             ->createOne(['id' => 3]);
 
-        $response = $this->get('/api/turbines/3');
+        $response = $this->getJson('/api/turbines/3');
         $response->assertJsonStructure(
             [
                 'data' => [
@@ -186,13 +272,18 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_show_returns_single_response_when_filtered_by_farm_id()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->createOne(['id' => 2]);
 
         Turbine::factory()
             ->createOne(['id' => 3, 'farm_id' => 2]);
 
-        $response = $this->get('/api/farms/2/turbines/3');
+        $response = $this->getJson('/api/farms/2/turbines/3');
         $response->assertJsonStructure(
             [
                 'data' => [
@@ -209,32 +300,47 @@ class TurbineControllerTest extends TestCase
 
     public function test_the_turbine_controller_show_returns_404_response_when_farm_id_invalid()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->createOne(['id' => 2]);
 
         Turbine::factory()
             ->createOne(['id' => 3, 'farm_id' => 2]);
 
-        $response = $this->get('/api/farms/1/turbines/3');
+        $response = $this->getJson('/api/farms/1/turbines/3');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_turbine_controller_show_returns_404_response_when_farm_id_a_float()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->createOne(['id' => 5]);
 
         Turbine::factory()
             ->createOne(['id' => 4]);
 
-        $response = $this->get('/api/farms/5.4/turbines/4');
+        $response = $this->getJson('/api/farms/5.4/turbines/4');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_the_turbine_controller_show_returns_404_response_when_farm_id_not_a_number()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*'],
+        );
+
         Farm::factory()
             ->count(5)
             ->create();
@@ -242,7 +348,7 @@ class TurbineControllerTest extends TestCase
         Turbine::factory()
             ->createOne(['id' => 5]);
 
-        $response = $this->get('/api/farms/test/turbines/3');
+        $response = $this->getJson('/api/farms/test/turbines/3');
 
         $response->assertStatus(Response::HTTP_NOT_FOUND);
     }
